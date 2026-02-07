@@ -109,28 +109,30 @@ button:hover { transform: scale(1.08); }
   <div id="yesBox" class="card result">
     <h2 id="yesMsg"></h2>
     <div id="roseWall" style="font-size:18px; line-height:1.5;"></div>
-    <button onclick="location.reload()">Again 🌹</button>
+    <button onclick="restart()">Again 🌹</button>
   </div>
 
   <!-- NO RESULT -->
   <div id="noBox" class="card result">
     <h1 style="font-size:40px;">😤💔</h1>
     <p id="noMsg"></p>
-    <button onclick="location.reload()">Retry</button>
+    <button onclick="restart()">Retry</button>
   </div>
 
 </div>
 
 <script>
 const name = "Jayuu";
+let typingTimer = null;
 
 function typeText(el, text, speed=40){
+  if(typingTimer) clearTimeout(typingTimer);
   el.innerHTML = "";
   let i = 0;
   function t(){
     if(i < text.length){
       el.innerHTML += text[i++];
-      setTimeout(t, speed);
+      typingTimer = setTimeout(t, speed);
     }
   }
   t();
@@ -138,6 +140,8 @@ function typeText(el, text, speed=40){
 
 function chooseYes() {
   hideQ();
+  removePetals();
+
   const box = document.getElementById("yesBox");
   box.classList.add("show","glow");
 
@@ -155,6 +159,8 @@ function chooseYes() {
 
 function chooseNo() {
   hideQ();
+  removePetals();
+
   document.body.classList.add("angry");
 
   const box = document.getElementById("noBox");
@@ -179,6 +185,22 @@ function createPetal(){
   p.style.animationDuration=(3+Math.random()*4)+"s";
   p.style.opacity=0.6 + Math.random()*0.4;
   document.body.appendChild(p);
+}
+
+function removePetals(){
+  document.querySelectorAll(".petal").forEach(p => p.remove());
+}
+
+function restart(){
+  removePetals();
+  document.body.className = "";
+  document.getElementById("question").style.display="flex";
+  document.getElementById("yesBox").className = "card result";
+  document.getElementById("noBox").className = "card result";
+  document.getElementById("roseWall").innerText = "";
+  document.getElementById("yesMsg").innerText = "";
+  document.getElementById("noMsg").innerText = "";
+  for(let i=0;i<25;i++) createPetal();
 }
 
 /* starting petals */
