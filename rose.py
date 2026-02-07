@@ -1,3 +1,11 @@
+from flask import Flask, Response
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    # Entire HTML, CSS, and JS embedded in Python string
+    return Response("""
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +23,6 @@ body {
   touch-action: manipulation;
 }
 
-/* falling roses */
 .petal {
   position: fixed;
   font-size: 20px;
@@ -31,7 +38,6 @@ body {
   100% { transform: translateY(110vh) rotate(360deg); }
 }
 
-/* layout */
 .center {
   height: 100vh;
   display: flex;
@@ -92,12 +98,10 @@ button:hover { transform: scale(1.08); }
 }
 </style>
 </head>
-
 <body>
 
 <div class="center">
 
-  <!-- QUESTION -->
   <div id="question" class="card">
     <h1>🌹 A Rose For You</h1>
     <p>Will you accept this rose?</p>
@@ -105,14 +109,12 @@ button:hover { transform: scale(1.08); }
     <button class="no" onclick="chooseNo()">No</button>
   </div>
 
-  <!-- YES RESULT -->
   <div id="yesBox" class="card result">
     <h2 id="yesMsg"></h2>
     <div id="roseWall" style="font-size:18px; line-height:1.5;"></div>
     <button onclick="restart()">Again 🌹</button>
   </div>
 
-  <!-- NO RESULT -->
   <div id="noBox" class="card result">
     <h1 style="font-size:40px;">😤💔</h1>
     <p id="noMsg"></p>
@@ -209,3 +211,7 @@ for(let i=0;i<25;i++) createPetal();
 
 </body>
 </html>
+""", mimetype="text/html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
